@@ -45,5 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Node Chat needs location for Bluetooth scanning and discovering nearby users. Your location is not tracked or stored on servers.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Node Chat needs location for Bluetooth scanning and discovering nearby users. Your location is not tracked or stored on servers.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Node Chat uses Bluetooth to discover nearby devices and send messages without internet.</string>
 </dict>
 </plist>

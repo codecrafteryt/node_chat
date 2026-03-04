@@ -3,14 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'data/helper/get_di.dart';
-import 'views/screens/scan_screen.dart';
+import 'views/screens/permission_gate.dart';
 import 'utils/permissions.dart';
 import 'utils/value/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await requestPermissions();
-  DependencyInjection.init();
+  await DependencyInjection.init();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -36,7 +36,7 @@ class NodeChatApp extends StatelessWidget {
           themeMode: ThemeMode.system,
           debugShowCheckedModeBanner: false,
           defaultTransition: Transition.leftToRight,
-          home: const ScanScreen(),
+          home: const PermissionGate(),
         );
       }
     );
