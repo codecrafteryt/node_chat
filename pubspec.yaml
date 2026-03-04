@@ -19,7 +19,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.10.3
+  #sdk: ^3.10.3
+  sdk: ">=3.9.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -37,7 +38,7 @@ dependencies:
 
   # Bluetooth mesh / P2P chat
   flutter_blue_plus: ^2.1.1
-  bluetooth_low_energy: ^6.2.1
+  bluetooth_low_energy: ^6.1.0
   flutter_ble_peripheral: ^2.1.0
   get: ^4.7.3
   shared_preferences: ^2.5.4
