@@ -10,8 +10,14 @@ class ScanScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final BluetoothController controller = Get.find<BluetoothController>();
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Nearby Devices'),
+        title: const Text('Nearby Devices',
+        style: TextStyle(
+          color: Color.fromRGBO(48, 42, 57, 1),
+        ),
+
+        ),
         actions: [
           Obx(() => controller.isScanning.value
               ? IconButton(

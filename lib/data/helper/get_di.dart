@@ -8,6 +8,7 @@ import '../../controllers/bluetooth_controller.dart';
 class DependencyInjection {
   static void init() async {
     final sharedPreferences = await SharedPreferences.getInstance();
+    Get.lazyPut(() => sharedPreferences, fenix: true);
     Get.lazyPut(() => BluetoothController(sharedPreferences: Get.find()), fenix: true);
   }
 }
