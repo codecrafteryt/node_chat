@@ -4,7 +4,7 @@
   Date: March 03, 2026
   Author: Ameer Salman
   ---------------------------------------
-  Description: custom my font's
+  Description: custom my fonts's
 */
 
 class MyFonts {
