@@ -5,10 +5,10 @@ import '../../controllers/bluetooth_controller.dart';
 
 class ScanScreen extends StatelessWidget {
   const ScanScreen({super.key});
-
+  BluetoothController get controller => Get.find<BluetoothController>();
   @override
   Widget build(BuildContext context) {
-    final BluetoothController controller = Get.find<BluetoothController>();
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -36,6 +36,14 @@ class ScanScreen extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Text(
+              'Scanning...',
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 20,
+                color: Color.fromRGBO(190, 149, 250, 1),
+              )
+            ),
             if (status.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.all(12),
