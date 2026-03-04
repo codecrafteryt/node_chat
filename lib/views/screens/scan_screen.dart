@@ -8,16 +8,9 @@ class ScanScreen extends StatelessWidget {
   BluetoothController get controller => Get.find<BluetoothController>();
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Nearby Devices',
-        style: TextStyle(
-          color: Color.fromRGBO(48, 42, 57, 1),
-        ),
-
-        ),
+        title: const Text('Nearby Devices',),
         actions: [
           Obx(() => controller.isScanning.value
               ? IconButton(
@@ -38,11 +31,7 @@ class ScanScreen extends StatelessWidget {
           children: [
             Text(
               'Scanning...',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 20,
-                color: Color.fromRGBO(190, 149, 250, 1),
-              )
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             if (status.isNotEmpty)
               Padding(
