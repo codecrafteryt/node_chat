@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
@@ -10,13 +9,8 @@ import 'location_controller.dart';
 
 enum PermissionScreen { bluetoothRequired, locationRequired, main }
 
-/// Interval for polling location/Bluetooth state while app is in foreground.
-/// Mirrors "runtime listener" behavior for location (no OS stream available).
-const Duration _kLocationPollInterval = Duration(seconds: 5);
-
-/// Listens to app lifecycle and notifies [PermissionFlowController] when app
-/// resumes or pauses. Used to re-check permissions on resume and to start/stop
-/// the location runtime poll (same idea as Bluetooth adapter listener).
+/// Listens to app lifecycle and notifies [PermissionFlowController] when app resumes.
+/// Used to re-check Bluetooth and location state when user returns from settings.
 class _PermissionFlowLifecycleObserver with WidgetsBindingObserver {
   _PermissionFlowLifecycleObserver(this._controller);
 
@@ -24,16 +18,8 @@ class _PermissionFlowLifecycleObserver with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.resumed:
-        _controller.onAppResumed();
-        break;
-      case AppLifecycleState.paused:
-      case AppLifecycleState.inactive:
-        _controller.onAppPaused();
-        break;
-      default:
-        break;
+    if (state == AppLifecycleState.resumed) {
+      _controller.recheckPermissionsOnResume();
     }
   }
 }
@@ -48,7 +34,6 @@ class PermissionFlowController extends GetxController {
 
   final LocationController _location;
   StreamSubscription<BluetoothAdapterState>? _btSubscription;
-  Timer? _locationPollTimer;
   late final _lifecycleObserver = _PermissionFlowLifecycleObserver(this);
 
   final Rx<PermissionScreen> currentScreen = PermissionScreen.bluetoothRequired.obs;
@@ -59,45 +44,20 @@ class PermissionFlowController extends GetxController {
     _location.loadStoredPosition();
     _listenBluetooth();
     WidgetsBinding.instance.addObserver(_lifecycleObserver);
-    _resolveInitialScreen().then((_) => _startLocationPoll());
+    _resolveInitialScreen();
   }
 
   @override
   void onClose() {
     _btSubscription?.cancel();
-    _stopLocationPoll();
     WidgetsBinding.instance.removeObserver(_lifecycleObserver);
     super.onClose();
-  }
-
-  /// Called when app comes to foreground. Re-checks permissions and starts
-  /// the location runtime poll (so toggling location on/off is detected).
-  void onAppResumed() {
-    recheckPermissionsOnResume();
-    _startLocationPoll();
-  }
-
-  /// Called when app goes to background. Stops the location poll to save battery.
-  void onAppPaused() {
-    _stopLocationPoll();
   }
 
   /// Called when app comes to foreground. Re-checks Bluetooth and location
   /// and navigates to the appropriate gate screen if something was turned off.
   Future<void> recheckPermissionsOnResume() async {
     await _recheckPermissionsAndUpdateScreen();
-  }
-
-  void _startLocationPoll() {
-    _locationPollTimer?.cancel();
-    _locationPollTimer = Timer.periodic(_kLocationPollInterval, (_) {
-      _recheckPermissionsAndUpdateScreenLight();
-    });
-  }
-
-  void _stopLocationPoll() {
-    _locationPollTimer?.cancel();
-    _locationPollTimer = null;
   }
 
   void _listenBluetooth() {
@@ -111,58 +71,20 @@ class PermissionFlowController extends GetxController {
   }
 
   /// Single source of truth: evaluate BT + location and set [currentScreen].
-  /// Full check: also fetches position (getCurrentPosition). Use for initial
-  /// resolve, resume, and "Check Again" button.
   Future<void> _recheckPermissionsAndUpdateScreen() async {
     final btOn = await _isBluetoothOn();
     if (!btOn) {
-      if (currentScreen.value != PermissionScreen.bluetoothRequired) {
-        debugPrint('[PermissionFlow] Bluetooth off → Bluetooth screen');
-        currentScreen.value = PermissionScreen.bluetoothRequired;
-      }
+      currentScreen.value = PermissionScreen.bluetoothRequired;
       return;
     }
 
     await _location.checkAndRefresh();
     if (!_location.isGranted || !_location.hasStoredPosition) {
-      if (currentScreen.value != PermissionScreen.locationRequired) {
-        debugPrint('[PermissionFlow] Location not ready → Location screen');
-        currentScreen.value = PermissionScreen.locationRequired;
-      }
+      currentScreen.value = PermissionScreen.locationRequired;
       return;
     }
 
-    if (currentScreen.value != PermissionScreen.main) {
-      debugPrint('[PermissionFlow] BT + Location OK → Main (Group Chat)');
-      currentScreen.value = PermissionScreen.main;
-    }
-  }
-
-  /// Light check for the 5s poll: permission + service only, no getCurrentPosition.
-  /// Avoids repeated timeout errors when GPS is slow or unavailable indoors.
-  Future<void> _recheckPermissionsAndUpdateScreenLight() async {
-    final btOn = await _isBluetoothOn();
-    if (!btOn) {
-      if (currentScreen.value != PermissionScreen.bluetoothRequired) {
-        debugPrint('[PermissionFlow] Bluetooth off → Bluetooth screen');
-        currentScreen.value = PermissionScreen.bluetoothRequired;
-      }
-      return;
-    }
-
-    await _location.checkLight();
-    if (!_location.isGranted || !_location.hasStoredPosition) {
-      if (currentScreen.value != PermissionScreen.locationRequired) {
-        debugPrint('[PermissionFlow] Location not ready → Location screen');
-        currentScreen.value = PermissionScreen.locationRequired;
-      }
-      return;
-    }
-
-    if (currentScreen.value != PermissionScreen.main) {
-      debugPrint('[PermissionFlow] BT + Location OK → Main (Group Chat)');
-      currentScreen.value = PermissionScreen.main;
-    }
+    currentScreen.value = PermissionScreen.main;
   }
 
   Future<void> _resolveInitialScreen() async {

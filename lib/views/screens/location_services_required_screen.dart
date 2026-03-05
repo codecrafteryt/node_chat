@@ -38,7 +38,7 @@ class LocationServicesRequiredScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
-             30.sbh,
+              30.sbh,
               Icon(
                 Icons.location_on_outlined,
                 size: 80,
@@ -47,10 +47,10 @@ class LocationServicesRequiredScreen extends StatelessWidget {
               24.sbh,
               Text(
                 'Location Services Required',
-                style: kSize18DarkW800Text.copyWith(fontSize: 20,),
+                style: kSize18DarkW800Text.copyWith(fontSize: 20),
                 textAlign: TextAlign.center,
               ),
-             24.sbh,
+              24.sbh,
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
@@ -68,7 +68,7 @@ class LocationServicesRequiredScreen extends StatelessWidget {
                           size: 20,
                           color: MyColors.mainTextColor,
                         ),
-                       8.sbw,
+                        8.sbw,
                         Text(
                           'Privacy First',
                           style: kSize14DarkW400Text.copyWith(
@@ -96,7 +96,9 @@ class LocationServicesRequiredScreen extends StatelessWidget {
                     ),
                     8.sbh,
                     CustomBullet(text: 'Bluetooth device scanning'),
-                    CustomBullet(text: 'Discovering nearby users on mesh network'),
+                    CustomBullet(
+                      text: 'Discovering nearby users on mesh network',
+                    ),
                     CustomBullet(text: 'Geohash chat feature'),
                     CustomBullet(text: 'No tracking or location collection'),
                   ],

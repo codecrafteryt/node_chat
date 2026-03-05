@@ -10,6 +10,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/bluetooth_controller.dart';
+import '../../utils/constants.dart';
 
 class GroupChatScreen extends StatelessWidget {
   const GroupChatScreen({super.key});
@@ -18,15 +19,18 @@ class GroupChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-         Text("data",
-         style: TextStyle(
-           fontSize: 20,
-           fontWeight: FontWeight.bold,
-         ),
-         ),
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+           Text("${AppConstants.appName}/@ch",
+           style: TextStyle(
+             fontSize: 20,
+             color: Colors.amberAccent,
+             fontWeight: FontWeight.bold,
+           ),
+           ),
+          ],
+        ),
       ),
     );
   }
