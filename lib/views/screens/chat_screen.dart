@@ -1,3 +1,12 @@
+/*
+  ---------------------------------------
+  Project: Node chat Mobile Application
+  Date: March 03, 2026
+  Author: Ameer Salman
+  ---------------------------------------
+  Description: chat screen
+*/
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

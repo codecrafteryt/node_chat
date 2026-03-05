@@ -1,3 +1,11 @@
+/*
+  ---------------------------------------
+  Project: Node chat Mobile Application
+  Date: March 03, 2026
+  Author: Ameer Salman
+  ---------------------------------------
+  Description: main Home screen with group chatting
+*/
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

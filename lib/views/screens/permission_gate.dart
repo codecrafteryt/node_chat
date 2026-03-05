@@ -1,7 +1,16 @@
+/*
+  ---------------------------------------
+  Project: Node chat Mobile Application
+  Date: March 03, 2026
+  Author: Ameer Salman
+  ---------------------------------------
+  Description: permission gating that decides which screen come's first
+*/
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/permission_flow_controller.dart';
-import 'bluetooth_required_screen.dart';
+import '../bluetooth_required_screen/bluetooth_required_screen.dart';
 import 'location_services_required_screen.dart';
 import 'scan_screen.dart';
 
