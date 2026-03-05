@@ -54,10 +54,7 @@ class BluetoothRequiredScreen extends StatelessWidget {
                   children: [
                     Text(
                       '${AppConstants.appName} needs Bluetooth to:',
-                      style: kSize14DarkW400Text.copyWith(
-                        color: MyColors.mainTextColor,
-                        fontFamily: MyFonts.inter,
-                      ),
+                      style: kSize14DarkW400Text
                     ),
                     const SizedBox(height: 12),
                     _Bullet(text: 'Discover nearby users'),
@@ -71,6 +68,7 @@ class BluetoothRequiredScreen extends StatelessWidget {
               CustomButton(
                 text: 'Enable Bluetooth',
                 textColor: Colors.black,
+                borderColor: Colors.transparent,
                 backgroundColor: MyColors.mainTextColor,
                 fontWeight: FontWeight.w600,
                 onPressed: () => flow.requestBluetoothOn(),
