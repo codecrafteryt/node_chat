@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/permission_flow_controller.dart';
 import '../bluetooth_required_screen/bluetooth_required_screen.dart';
+import '../group_chat_screen/group_chat_screen.dart';
 import 'location_services_required_screen.dart';
-import 'scan_screen.dart';
 
 /// Shows BluetoothRequired → LocationServicesRequired → ScanScreen based on [PermissionFlowController].
 class PermissionGate extends StatelessWidget {
@@ -28,7 +28,7 @@ class PermissionGate extends StatelessWidget {
         case PermissionScreen.locationRequired:
           return const LocationServicesRequiredScreen();
         case PermissionScreen.main:
-          return const ScanScreen();
+          return const GroupChatScreen();
       }
     });
   }
